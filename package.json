@@ -1,0 +1,19 @@
+{
+  "name": "chainshield-prototype",
+  "version": "0.1.0",
+  "description": "ChainShield prototype: early warning and backup for small manufacturers' supply chains",
+  "private": true,
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "start": "node src/server.js",
+    "test": "node --test tests/*.test.js"
+  },
+  "dependencies": {
+    "@sap/hana-client": "^2.30.32"
+  },
+  "allowScripts": {
+    "@sap/hana-client@2.30.32": true
+  }
+}

@@ -1,0 +1,562 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ChainShield</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Barlow:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root { --cream:#FFFFCC; --paper:#FFF8D2; --brown:#933B10; --btn:#A0420F; --orange:#C26D10; --dark:#3F3F3F; --edge:#14282D; --link:#2F6FB0; --ink:#2A1405; --mute:#6B4A2B; --line:#E2B56A; --low:#0F6B4A; --med:#8A4A00; --high:#A31616; }
+  * { box-sizing:border-box; }
+  html, body { margin:0; }
+  body { font:16px/1.5 'DIN Alternate','Barlow','Segoe UI',system-ui,sans-serif; background:var(--cream); color:var(--ink); min-height:100vh; position:relative; overflow-x:hidden; }
+  .hide { display:none !important; }
+  input, select, button { font:inherit; padding:10px 12px; border-radius:10px; border:2px solid var(--edge); background:var(--dark); color:#fff; min-width:0; }
+  input::placeholder { color:#a3a3a3; font-weight:600; }
+  select option { color:#fff; background:#3F3F3F; }
+  input[type=checkbox] { -webkit-appearance:checkbox; appearance:auto; width:19px; height:19px; padding:0; background:#fff; border:2px solid var(--edge); accent-color:var(--brown); flex:0 0 auto; }
+  button { cursor:pointer; background:var(--btn); color:var(--cream); border:2px solid var(--btn); font-weight:700; }
+  button:hover { filter:brightness(1.1); }
+  button.ghost { background:transparent; color:var(--brown); border-color:var(--brown); }
+  button.small { padding:4px 10px; font-size:13px; border-radius:8px; }
+  a { color:var(--link); font-weight:700; text-decoration:none; } a:hover { text-decoration:underline; }
+
+  /* ================= LOGIN: no page scroll ================= */
+  body.auth { height:100vh; height:100dvh; overflow:hidden; }
+  #login { display:none; height:100vh; height:100dvh; grid-template-columns:1.1fr 1fr; position:relative; }
+  body.auth #login { display:grid; }
+  body.auth header, body.auth main, body.auth .chain-bg { display:none; }
+  .brand { position:relative; overflow:hidden; display:flex; align-items:center; padding:0 clamp(24px,5vw,80px); }
+  .brand .ring { position:absolute; left:0; top:0; width:clamp(130px,16vw,220px); height:auto; }
+  .chain-l { position:absolute; left:0; bottom:0; width:100%; height:30%; pointer-events:none; -webkit-mask-image:linear-gradient(to right,#000 60%,transparent 98%); mask-image:linear-gradient(to right,#000 60%,transparent 98%); }
+  .brand-inner { position:relative; z-index:1; padding-bottom:9vh; }
+  .brand h1 { margin:0; color:var(--brown); font-size:clamp(46px,6.2vw,84px); line-height:1; letter-spacing:.5px; }
+  .tag { margin:6px 0 26px; color:var(--brown); font-size:clamp(17px,1.8vw,24px); font-weight:600; }
+  .points { list-style:none; margin:0; padding:0; display:grid; gap:12px; max-width:420px; }
+  .points li { display:flex; align-items:center; gap:12px; font-size:clamp(15px,1.4vw,18px); font-weight:600; }
+  .ic { flex:0 0 auto; width:36px; height:36px; border-radius:50%; background:var(--brown); color:var(--cream); display:grid; place-items:center; font-weight:700; }
+  .formside { display:grid; place-items:center; padding:20px; overflow-y:auto; min-height:0; }
+  .langpick { position:absolute; top:16px; right:16px; z-index:3; }
+  .langpick select { background:var(--brown); border-color:var(--brown); color:var(--cream); font-weight:700; padding:7px 10px; }
+  .login-card { width:min(440px,100%); max-height:100%; background:var(--orange); border-radius:30px; padding:24px 28px 18px; color:#1b1005; box-shadow:0 10px 0 var(--brown); }
+  .toggle { display:grid; grid-template-columns:1fr 1fr; background:rgba(0,0,0,.2); border-radius:14px; padding:4px; margin-bottom:16px; }
+  .toggle button { background:transparent; border:0; color:#2A1405; padding:9px; border-radius:11px; font-size:17px; }
+  .toggle button.on { background:var(--cream); color:var(--brown); }
+  .login-card input, .login-card select { width:100%; font-size:17px; font-weight:700; margin:0 0 10px; }
+  .g2 { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .otp-row { display:flex; gap:10px; } .otp-row input { flex:1 1 auto; } .otp-row button { flex:0 0 auto; margin-bottom:10px; }
+  .forgot { background:none; border:0; padding:0; color:#1b1005; font-weight:700; font-size:14px; margin:-4px 0 10px auto; display:block; }
+  .forgot:hover { text-decoration:underline; }
+  .go { display:block; width:100%; margin:6px 0 4px; background:var(--cream); color:var(--brown); border-color:var(--brown); font-size:19px; padding:10px; letter-spacing:.5px; }
+  .consent { display:flex; gap:8px; align-items:flex-start; font-size:13px; font-weight:600; margin:0 0 6px; }
+  .consent input { width:19px; margin:1px 0 0; }
+  .note { text-align:center; font-size:14px; font-weight:700; color:#fff; margin:6px 0 0; } .note:empty { display:none; }
+  .terms { text-align:center; font-size:14px; margin:12px 0 0; }
+  .terms a { color:#fff; text-decoration:underline; }
+  .back { display:block; text-align:center; width:100%; background:none; border:0; color:#fff; text-decoration:underline; font-size:14px; padding:4px; }
+
+  @media (max-width:860px) {
+    #login { grid-template-columns:1fr; grid-template-rows:auto minmax(0,1fr); }
+    .brand { padding:14px 104px 4px 20px; justify-content:flex-start; text-align:left; }
+    .brand .ring { display:none; } .points, .chain-l { display:none; } .brand-inner { padding-bottom:0; }
+    .brand h1 { font-size:40px; } .tag { margin:2px 0 0; font-size:15px; }
+    .formside { padding:10px 14px 16px; align-items:start; }
+    .login-card { border-radius:24px; padding:18px 18px 14px; box-shadow:0 6px 0 var(--brown); }
+    .langpick { top:10px; right:10px; }
+  }
+
+  /* ================= APP ================= */
+  .chain-bg { position:fixed; right:0; bottom:0; width:100%; height:100%; opacity:.09; pointer-events:none; z-index:0; }
+  header { position:relative; z-index:2; display:flex; justify-content:space-between; align-items:center; padding:10px 22px; background:var(--brown); color:var(--cream); }
+  header b { font-size:26px; letter-spacing:.4px; }
+  #who { display:flex; align-items:center; gap:10px; font-weight:600; }
+  .dp { width:40px; height:40px; border-radius:50%; background:var(--cream); color:var(--brown); display:grid; place-items:center; font-weight:700; font-size:19px; }
+  main { position:relative; z-index:1; max-width:1120px; margin:0 auto; padding:18px 16px 40px; }
+  /* folder tabs: the open tab joins the orange board, like the design reference */
+  .tabs { display:flex; align-items:flex-end; gap:8px; overflow-x:auto; scrollbar-width:none; }
+  .tabs::-webkit-scrollbar { display:none; }
+  .tab { flex:1 1 0; min-width:max-content; height:46px; margin-bottom:8px; padding:0 16px; background:var(--orange); color:var(--ink); border:0; border-radius:12px; font-weight:700; font-size:15px; white-space:nowrap; filter:none; }
+  .tab:hover { background:#6E6E6E; color:#fff; filter:none; }
+  .tab.on { height:56px; margin-bottom:0; border-radius:14px 14px 0 0; background:var(--orange); color:var(--ink); }
+  .board { background:var(--orange); border-radius:18px; padding:16px; min-height:calc(100vh - 220px); }
+  .board.tl { border-top-left-radius:0; }
+  .card { background:var(--paper); border:2px solid #E5A24C; border-radius:16px; padding:16px; margin:0 0 14px; }
+  .card:last-child { margin-bottom:0; }
+  h2 { margin:0 0 10px; font-size:21px; color:var(--brown); }
+  .row { display:flex; gap:8px; flex-wrap:wrap; margin:8px 0; align-items:center; }
+  .row > input, .row > select { flex:1 1 150px; }
+  .grid2 { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin:8px 0; }
+  .card input, .card select { width:100%; }
+  .row > input, .row > select { width:auto; }
+  .muted { color:var(--mute); font-size:14px; }
+  .pill { display:inline-block; padding:1px 10px; border-radius:99px; font-size:13px; border:1.5px solid currentColor; background:var(--cream); font-weight:700; }
+  .low { color:var(--low); } .medium { color:var(--med); } .high { color:var(--high); }
+  .stats { display:grid; grid-template-columns:repeat(auto-fit, minmax(160px,1fr)); gap:10px; }
+  .stat { background:var(--cream); border:2px solid var(--line); border-radius:14px; padding:10px 14px; margin:0; }
+  .stat b { display:block; font-size:26px; color:var(--brown); }
+  .placeholder { border-style:dashed; color:var(--mute); }
+  .plist { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:10px; }
+  .pitem { background:var(--cream); border:2px solid var(--line); border-radius:14px; padding:10px 12px; }
+  .pitem b { font-size:17px; color:var(--brown); }
+  .badge { display:inline-block; padding:1px 9px; border-radius:99px; font-size:12px; font-weight:700; margin-right:4px; }
+  .b-main { background:var(--brown); color:var(--cream); }
+  .b-alt { background:#E5A24C; color:#2A1405; }
+  .b-ok { background:#DDEFD9; color:#0F6B4A; }
+  .b-warn { background:#FFE0B8; color:#8A4A00; }
+  #toast { position:fixed; bottom:18px; left:50%; transform:translateX(-50%); background:var(--brown); color:var(--cream); padding:10px 16px; border-radius:12px; max-width:90vw; z-index:9; }
+  /* Ask AI chat */
+  .chat-head { display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap; }
+  .chat-head h2 { margin:0; }
+  .chat-log { height:min(46vh,420px); overflow-y:auto; background:#fff; border:2px solid var(--line); border-radius:16px; padding:12px; margin:10px 0; display:flex; flex-direction:column; gap:10px; }
+  .msg { max-width:82%; padding:9px 13px; border-radius:16px; line-height:1.45; word-wrap:break-word; }
+  .msg.user { align-self:flex-end; background:var(--brown); color:var(--cream); border-bottom-right-radius:4px; }
+  .msg.ai { align-self:flex-start; background:var(--paper); border:2px solid var(--line); color:var(--ink); border-bottom-left-radius:4px; }
+  .msg small { display:block; margin-top:4px; color:var(--mute); font-size:12px; }
+  .dots span { display:inline-block; width:7px; height:7px; margin:0 2px; border-radius:50%; background:var(--brown); animation:blink 1.2s infinite; }
+  .dots span:nth-child(2) { animation-delay:.2s; } .dots span:nth-child(3) { animation-delay:.4s; }
+  @keyframes blink { 0%,80%,100% { opacity:.25; } 40% { opacity:1; } }
+  .chips { display:flex; flex-wrap:wrap; gap:8px; margin:0 0 10px; }
+  .chip { background:var(--cream); color:var(--brown); border:2px solid var(--brown); border-radius:999px; padding:5px 14px; font-size:14px; }
+  .chat-input { display:flex; gap:8px; } .chat-input input { flex:1 1 auto; }
+  /* show-password eye */
+  .pw { position:relative; margin:0 0 10px; }
+  .pw input { margin:0 !important; padding-right:48px; }
+  .eye { position:absolute; right:5px; top:50%; transform:translateY(-50%); margin:0; width:40px; height:36px; padding:0; background:transparent; border:0; color:#cfcfcf; display:grid; place-items:center; }
+  .eye:hover { color:#fff; filter:none; }
+  .eye svg { width:22px; height:22px; }
+  /* account menu */
+  .acct { position:relative; }
+  #who { background:transparent; border:0; color:var(--cream); padding:2px 4px; border-radius:30px; }
+  #who:hover { filter:none; background:rgba(255,255,255,.12); }
+  .menu { position:absolute; right:0; top:52px; z-index:30; min-width:230px; background:var(--brown); border:2px solid var(--orange); border-radius:28px; padding:14px 22px; display:grid; gap:2px; box-shadow:0 10px 24px rgba(0,0,0,.25); }
+  .menu button { background:none; border:0; text-align:right; color:#8EC5EE; font-size:19px; font-weight:700; padding:9px 0; border-radius:0; }
+  .menu button:hover { color:var(--cream); filter:none; }
+  /* sub tabs inside Chain Details */
+  .subtabs { display:flex; gap:8px; flex-wrap:wrap; margin:0 0 14px; }
+  .sub { background:var(--paper); color:var(--brown); border:2px solid var(--brown); border-radius:999px; padding:8px 22px; font-weight:700; }
+  .sub.on { background:var(--brown); color:var(--cream); }
+  /* order tracker */
+  .tracker { display:flex; gap:20px; align-items:center; flex-wrap:wrap; border-radius:28px; padding:14px; }
+  .map { flex:0 0 240px; height:155px; border:2px dashed #E5A24C; border-radius:20px; background:#fff; display:grid; place-items:center; text-align:center; color:var(--mute); font-weight:700; padding:10px; }
+  .map svg { width:34px; height:34px; color:var(--brown); }
+  .tinfo { flex:1 1 280px; }
+  .tinfo h3 { margin:0 0 4px; font-size:28px; color:var(--brown); }
+  .tinfo .line { font-size:21px; color:var(--brown); font-weight:600; }
+  .tinfo select { max-width:300px; margin:8px 0 10px; display:block; }
+  @media (max-width:600px) { .map { flex-basis:100%; } header { padding:8px 14px; } header b { font-size:22px; } .grid2 { grid-template-columns:1fr; } .board { padding:10px; } }
+</style>
+</head>
+<body class="auth">
+<svg class="chain-bg" viewBox="0 0 1080 600" preserveAspectRatio="xMaxYMid slice" aria-hidden="true"><g transform="translate(1090.0 -30.0) rotate(131.4)"><rect x="-44" y="-24" width="88" height="48" rx="24" fill="none" stroke="#767676" stroke-width="15"/><rect x="-36" y="-17" width="60" height="5" rx="2.5" fill="#a5a5a5" opacity=".55"/></g><g transform="translate(1050.7 14.7) rotate(131.4)"><rect x="-34" y="-10" width="68" height="20" rx="10" fill="#6a6a6a"/></g><g transform="translate(1011.3 59.3) rotate(131.4)"><rect x="-44" y="-24" width="88" height="48" rx="24" fill="none" stroke="#767676" stroke-width="15"/><rect x="-36" y="-17" width="60" height="5" rx="2.5" fill="#a5a5a5" opacity=".55"/></g><g transform="translate(972.0 104.0) rotate(131.4)"><rect x="-34" y="-10" width="68" height="20" rx="10" fill="#6a6a6a"/></g><g transform="translate(932.7 148.7) rotate(131.4)"><rect x="-44" y="-24" width="88" height="48" rx="24" fill="none" stroke="#767676" stroke-width="15"/><rect x="-36" y="-17" width="60" height="5" rx="2.5" fill="#a5a5a5" opacity=".55"/></g><g transform="translate(893.3 193.3) rotate(131.4)"><rect x="-34" y="-10" width="68" height="20" rx="10" fill="#6a6a6a"/></g><g transform="translate(854.0 238.0) rotate(131.4)"><rect x="-44" y="-24" width="88" height="48" rx="24" fill="none" stroke="#767676" stroke-width="15"/><rect x="-36" y="-17" width="60" height="5" rx="2.5" fill="#a5a5a5" opacity=".55"/></g><g transform="translate(814.7 282.7) rotate(131.4)"><rect x="-34" y="-10" width="68" height="20" rx="10" fill="#6a6a6a"/></g><g transform="translate(775.3 327.3) rotate(131.4)"><rect x="-44" y="-24" width="88" height="48" rx="24" fill="none" stroke="#767676" stroke-width="15"/><rect x="-36" y="-17" width="60" height="5" rx="2.5" fill="#a5a5a5" opacity=".55"/></g><g transform="translate(736.0 372.0) rotate(131.4)"><rect x="-34" y="-10" width="68" height="20" rx="10" fill="#6a6a6a"/></g><g transform="translate(696.7 416.7) rotate(131.4)"><rect x="-44" y="-24" width="88" height="48" rx="24" fill="none" stroke="#767676" stroke-width="15"/><rect x="-36" y="-17" width="60" height="5" rx="2.5" fill="#a5a5a5" opacity=".55"/></g><g transform="translate(657.3 461.3) rotate(131.4)"><rect x="-34" y="-10" width="68" height="20" rx="10" fill="#6a6a6a"/></g><g transform="translate(618.0 506.0) rotate(131.4)"><rect x="-44" y="-24" width="88" height="48" rx="24" fill="none" stroke="#767676" stroke-width="15"/><rect x="-36" y="-17" width="60" height="5" rx="2.5" fill="#a5a5a5" opacity=".55"/></g><g transform="translate(578.7 550.7) rotate(131.4)"><rect x="-34" y="-10" width="68" height="20" rx="10" fill="#6a6a6a"/></g><g transform="translate(539.3 595.3) rotate(131.4)"><rect x="-44" y="-24" width="88" height="48" rx="24" fill="none" stroke="#767676" stroke-width="15"/><rect x="-36" y="-17" width="60" height="5" rx="2.5" fill="#a5a5a5" opacity=".55"/></g><g transform="translate(500.0 640.0) rotate(131.4)"><rect x="-34" y="-10" width="68" height="20" rx="10" fill="#6a6a6a"/></g></svg>
+
+<!-- ===== Login / Register ===== -->
+<div id="login">
+  <div class="langpick"><select id="lang" onchange="pickLang(this.value)"><option value="en">English</option><option value="hi">हिन्दी</option></select></div>
+
+  <section class="brand">
+    <svg class="ring" viewBox="0 0 210 180" aria-hidden="true"><circle cx="88" cy="60" r="118" fill="#933B10"/><circle cx="88" cy="60" r="85" fill="#FFFFCC"/><circle cx="88" cy="60" r="57" fill="#933B10"/></svg>
+    <svg class="chain-l" viewBox="0 0 600 200" preserveAspectRatio="xMinYMax slice" aria-hidden="true"><g transform="translate(-40.0 175.0) rotate(-12.4)"><rect x="-44" y="-24" width="88" height="48" rx="24" fill="none" stroke="#767676" stroke-width="15"/><rect x="-36" y="-17" width="60" height="5" rx="2.5" fill="#a5a5a5" opacity=".55"/></g><g transform="translate(16.7 162.5) rotate(-12.4)"><rect x="-34" y="-10" width="68" height="20" rx="10" fill="#6a6a6a"/></g><g transform="translate(73.3 150.0) rotate(-12.4)"><rect x="-44" y="-24" width="88" height="48" rx="24" fill="none" stroke="#767676" stroke-width="15"/><rect x="-36" y="-17" width="60" height="5" rx="2.5" fill="#a5a5a5" opacity=".55"/></g><g transform="translate(130.0 137.5) rotate(-12.4)"><rect x="-34" y="-10" width="68" height="20" rx="10" fill="#6a6a6a"/></g><g transform="translate(186.7 125.0) rotate(-12.4)"><rect x="-44" y="-24" width="88" height="48" rx="24" fill="none" stroke="#767676" stroke-width="15"/><rect x="-36" y="-17" width="60" height="5" rx="2.5" fill="#a5a5a5" opacity=".55"/></g><g transform="translate(243.3 112.5) rotate(-12.4)"><rect x="-34" y="-10" width="68" height="20" rx="10" fill="#6a6a6a"/></g><g transform="translate(300.0 100.0) rotate(-12.4)"><rect x="-44" y="-24" width="88" height="48" rx="24" fill="none" stroke="#767676" stroke-width="15"/><rect x="-36" y="-17" width="60" height="5" rx="2.5" fill="#a5a5a5" opacity=".55"/></g><g transform="translate(356.7 87.5) rotate(-12.4)"><rect x="-34" y="-10" width="68" height="20" rx="10" fill="#6a6a6a"/></g><g transform="translate(413.3 75.0) rotate(-12.4)"><rect x="-44" y="-24" width="88" height="48" rx="24" fill="none" stroke="#767676" stroke-width="15"/><rect x="-36" y="-17" width="60" height="5" rx="2.5" fill="#a5a5a5" opacity=".55"/></g><g transform="translate(470.0 62.5) rotate(-12.4)"><rect x="-34" y="-10" width="68" height="20" rx="10" fill="#6a6a6a"/></g><g transform="translate(526.7 50.0) rotate(-12.4)"><rect x="-44" y="-24" width="88" height="48" rx="24" fill="none" stroke="#767676" stroke-width="15"/><rect x="-36" y="-17" width="60" height="5" rx="2.5" fill="#a5a5a5" opacity=".55"/></g><g transform="translate(583.3 37.5) rotate(-12.4)"><rect x="-34" y="-10" width="68" height="20" rx="10" fill="#6a6a6a"/></g><g transform="translate(640.0 25.0) rotate(-12.4)"><rect x="-44" y="-24" width="88" height="48" rx="24" fill="none" stroke="#767676" stroke-width="15"/><rect x="-36" y="-17" width="60" height="5" rx="2.5" fill="#a5a5a5" opacity=".55"/></g></svg>
+    <div class="brand-inner">
+      <h1>ChainShield</h1>
+      <p class="tag" data-i="tagline">Protecting your Business 24/7</p>
+      <ul class="points">
+        <li><span class="ic">!</span><span data-i="pt1">Early warning before a disruption hits</span></li>
+        <li><span class="ic">&#8377;</span><span data-i="pt2">Money at risk, explained in plain words</span></li>
+        <li><span class="ic">&#8644;</span><span data-i="pt3">A backup supplier in one tap on WhatsApp</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="formside">
+    <div class="login-card">
+      <div class="toggle" id="toggle"><button id="tg-log" class="on" onclick="mode('log')" data-i="login">Login</button><button id="tg-reg" onclick="mode('reg')" data-i="register">Register</button></div>
+
+      <div id="f-log">
+        <input id="lmobile" data-p="phone" placeholder="Phone number" inputmode="numeric" maxlength="10" autocomplete="username">
+        <div class="pw"><input id="lpw" type="password" data-p="password" placeholder="Password" autocomplete="current-password"><button type="button" class="eye" onclick="togglePw(this)" aria-label="Show password"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path class="e-on" d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/><circle class="e-on" cx="12" cy="12" r="3"/><g class="e-off" style="display:none"><path d="M17.94 17.94A10.9 10.9 0 0 1 12 19C5 19 1 12 1 12a18.5 18.5 0 0 1 5.06-5.94M9.9 4.24A10.9 10.9 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19M14.12 14.12a3 3 0 1 1-4.24-4.24"/><path d="M1 1l22 22"/></g></svg></button></div>
+        <button class="forgot" onclick="mode('forgot')" data-i="forgot">Forgot password?</button>
+        <div class="otp-row"><input id="lotp" data-p="enter_otp" placeholder="Enter OTP" inputmode="numeric" maxlength="6"><button onclick="getLoginOtp()" data-i="get_otp">Get OTP</button></div>
+        <button class="go" onclick="doVerify()" data-i="login_btn">LOGIN</button>
+      </div>
+
+      <div id="f-reg" class="hide">
+        <div class="g2"><select id="role"><option value="business" data-i="r_business">MSME owner</option><option value="supplier" data-i="r_supplier">Supplier</option><option value="client" data-i="r_client">Client</option></select>
+          <input id="bname" data-p="name" placeholder="Business name"></div>
+        <input id="mobile" data-p="phone" placeholder="Phone number" inputmode="numeric" maxlength="10">
+        <div class="otp-row"><input id="otp" data-p="enter_otp" placeholder="Enter OTP" inputmode="numeric" maxlength="6"><button onclick="sendOtp('mobile')" data-i="get_otp">Get OTP</button></div>
+        <div class="pw"><input id="pw" type="password" data-p="new_pw" placeholder="Create password (min 6 characters)" autocomplete="new-password"><button type="button" class="eye" onclick="togglePw(this)" aria-label="Show password"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path class="e-on" d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/><circle class="e-on" cx="12" cy="12" r="3"/><g class="e-off" style="display:none"><path d="M17.94 17.94A10.9 10.9 0 0 1 12 19C5 19 1 12 1 12a18.5 18.5 0 0 1 5.06-5.94M9.9 4.24A10.9 10.9 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19M14.12 14.12a3 3 0 1 1-4.24-4.24"/><path d="M1 1l22 22"/></g></svg></button></div>
+        <label class="consent"><input type="checkbox" id="consent"> <span data-i="consent">I agree that ChainShield may use my mobile number and location to send risk alerts. I can ask for my data to be deleted.</span></label>
+        <button class="go" onclick="doRegister()" data-i="register_btn">REGISTER</button>
+      </div>
+
+      <div id="f-forgot" class="hide">
+        <input id="fmobile" data-p="phone" placeholder="Phone number" inputmode="numeric" maxlength="10">
+        <div class="otp-row"><input id="fotp" data-p="enter_otp" placeholder="Enter OTP" inputmode="numeric" maxlength="6"><button onclick="sendOtp('fmobile')" data-i="get_otp">Get OTP</button></div>
+        <div class="pw"><input id="fpw" type="password" data-p="new_pw" placeholder="Create password (min 6 characters)" autocomplete="new-password"><button type="button" class="eye" onclick="togglePw(this)" aria-label="Show password"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path class="e-on" d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/><circle class="e-on" cx="12" cy="12" r="3"/><g class="e-off" style="display:none"><path d="M17.94 17.94A10.9 10.9 0 0 1 12 19C5 19 1 12 1 12a18.5 18.5 0 0 1 5.06-5.94M9.9 4.24A10.9 10.9 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19M14.12 14.12a3 3 0 1 1-4.24-4.24"/><path d="M1 1l22 22"/></g></svg></button></div>
+        <button class="go" onclick="doReset()" data-i="reset_btn">RESET PASSWORD</button>
+        <button class="back" onclick="mode('log')" data-i="back_login">Back to login</button>
+      </div>
+
+      <p class="note" id="otpnote"></p>
+      <p class="terms"><span data-i="agree">By continuing, you agree to our</span> <a href="/legal.html#terms" target="_blank" data-i="terms">terms</a> <span data-i="and">and</span> <a href="/legal.html#policies" target="_blank" data-i="policies">policies</a></p>
+    </div>
+  </section>
+</div>
+
+<!-- ===== App ===== -->
+<header id="hdr"><b>ChainShield</b>
+  <div class="acct"><button id="who" onclick="toggleMenu(event)" aria-haspopup="true"></button>
+    <div id="menu" class="menu hide">
+      <button onclick="show('account')" data-i="my_account">My Account</button>
+      <button onclick="show('history')" data-i="order_history">Order History</button>
+      <button onclick="show('settings')" data-i="tab_settings">Settings</button>
+      <button onclick="logout()" data-i="logout">Log out</button>
+    </div></div></header>
+<main>
+<div id="app" class="hide">
+  <div id="soon" class="card hide"><h2 data-i="soon_title">Coming soon</h2><p data-i="soon_text">The supplier and client sides are being built next. For now the full site is for MSME owners.</p><button class="ghost" onclick="logout()" data-i="logout">Log out</button></div>
+  <div id="shell">
+    <nav class="tabs" id="tabs"></nav>
+    <div class="board" id="board">
+
+      <section id="t-dash"><div class="card"><h2 data-i="tab_dash">Dashboard</h2><div id="dash" class="stats"></div></div>
+        <div class="card placeholder"><b>SAP Analytics Cloud</b><br><span data-i="sac_note">Planned: the full impact dashboard. For now this page shows the numbers from our own data.</span></div>
+        <div class="card tracker">
+          <div class="map"><div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/></svg><br><span data-i="live_box">Order live location</span></div></div>
+          <div class="tinfo">
+            <h3 data-i="trk_title">Order Current Location</h3>
+            <div class="line"><span data-i="trk_city">City</span> : <span id="trk-city">&mdash;</span></div>
+            <div class="line"><span data-i="trk_stage">Stage</span> : <span data-i="stage1">Supplier to MSME Owner</span></div>
+            <select id="trk-order"></select>
+            <button onclick="requestLocation()" data-i="trk_btn">Request Driver Live Location</button>
+            <p class="muted" id="trk-note"></p>
+          </div>
+        </div></section>
+
+      <section id="t-chain" class="hide">
+        <div class="subtabs" id="subtabs"></div>
+        <div id="p-supplier"></div><div id="p-client" class="hide"></div><div id="p-transporter" class="hide"></div>
+      </section>
+
+      <section id="t-orders" class="hide">
+        <div class="card"><h2 data-i="create_order">Create an order</h2>
+          <div class="row"><select id="oc"></select><input id="od" type="date"></div>
+          <div id="olines"></div>
+          <p class="muted" data-i="order_hint">Only main suppliers can be used in an order. Alternative suppliers are kept as backups.</p>
+          <div class="row"><button class="ghost" onclick="addLine()" data-i="add_line">+ Supplier line</button><button onclick="addOrder()" data-i="create_btn">Create order</button></div>
+        </div>
+        <div class="card"><h2 data-i="your_orders">Your orders</h2><div id="olist" class="muted">-</div></div>
+      </section>
+
+      <section id="t-risk" class="hide">
+        <div class="card"><h2 data-i="tab_risk">Risk and alerts</h2>
+          <div class="row"><select id="ro"></select><button onclick="runRisk()" data-i="check_risk">Check risk now</button><button class="ghost" onclick="demoWeather()" data-i="demo_weather">Demo: orange weather at Valsad</button></div>
+          <div id="rout" class="muted">-</div></div>
+        <div class="card"><h2 data-i="alerts">Alerts</h2><div id="alist" class="muted">-</div></div>
+      </section>
+
+      <section id="t-sap" class="hide">
+        <div class="card placeholder"><b>Joule</b><br><span data-i="joule_note">Planned for a future release. Until then, help is a built-in assistant.</span></div>
+        <div class="card placeholder"><b>SAP AI Core</b><br>Risk scoring (planned).</div>
+        <div class="card placeholder"><b>SAP Integration Suite</b><br>Weather feed and WhatsApp connection (planned).</div>
+      </section>
+
+      <section id="t-ask" class="hide">
+        <div class="card"><div class="chat-head"><h2 data-i="tab_ask">Ask AI</h2><span id="ai-status" class="badge b-warn">&hellip;</span></div>
+          <div id="chat-log" class="chat-log"></div>
+          <div id="chips" class="chips"></div>
+          <div class="chat-input"><input id="chat-in" data-p="ask_ph" placeholder="Ask about your orders or ChainShield" onkeydown="if (event.key === 'Enter') sendChat()"><button onclick="sendChat()" data-i="ask_send">Send</button></div>
+        </div>
+      </section>
+
+      <section id="t-account" class="hide">
+        <div class="card"><h2 data-i="my_account">My Account</h2>
+          <div class="grid2"><div><label class="muted" data-i="f_name">Name</label><input id="ac-name"></div><div><label class="muted" data-i="f_phone">Phone number</label><input id="ac-mobile" disabled></div></div>
+          <div class="grid2"><div><label class="muted" data-i="f_address">Address (with city)</label><input id="ac-address"></div><div><label class="muted" data-i="acct_type">Account type</label><input id="ac-role" disabled></div></div>
+          <p class="muted" id="ac-consent"></p>
+          <button onclick="saveAccount()" data-i="save">Save</button></div>
+      </section>
+
+      <section id="t-history" class="hide">
+        <div class="card"><h2 data-i="order_history">Order History</h2><div id="hlist" class="plist"></div></div>
+      </section>
+
+      <section id="t-settings" class="hide">
+        <div class="card"><h2 data-i="tab_settings">Settings</h2>
+          <div class="row"><label data-i="language">Language</label><select id="slang" onchange="saveLang(this.value)"><option value="en">English</option><option value="hi">हिन्दी</option></select></div>
+          <div class="row"><button class="ghost" onclick="logout()" data-i="logout">Log out</button></div></div>
+      </section>
+    </div>
+  </div>
+</div>
+</main>
+<div id="toast" class="hide"></div>
+
+<script>
+let token = localStorage.getItem('cs_token') || '';
+let me = null, partners = [], orders = [];
+const $ = (id) => document.getElementById(id);
+const rs = (n) => '\u20B9' + Number(n).toLocaleString('en-IN');
+const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;' }[c]));
+function toast(m) { const e = $('toast'); e.textContent = m; e.classList.remove('hide'); setTimeout(() => e.classList.add('hide'), 3200); }
+async function api(method, path, body) {
+  const res = await fetch(path, { method, headers: { 'Content-Type': 'application/json', ...(token ? { Authorization: 'Bearer ' + token } : {}) }, body: body ? JSON.stringify(body) : undefined });
+  const data = await res.json();
+  if (!res.ok) { toast(data.error || 'Something went wrong'); throw new Error(data.error); }
+  return data;
+}
+
+/* ---------- words (English and Hindi) ---------- */
+const I18N = {
+  en: { tagline:'Protecting your Business 24/7', pt1:'Early warning before a disruption hits', pt2:'Money at risk, explained in plain words', pt3:'A backup supplier in one tap on WhatsApp',
+    phone:'Phone number', password:'Password', forgot:'Forgot password?', get_otp:'Get OTP', enter_otp:'Enter OTP', login:'Login', register:'Register',
+    login_btn:'LOGIN', register_btn:'REGISTER', reset_btn:'RESET PASSWORD', back_login:'Back to login',
+    agree:'By continuing, you agree to our', terms:'terms', and:'and', policies:'policies',
+    r_business:'MSME owner', r_supplier:'Supplier', r_client:'Client', name:'Business name', new_pw:'Create password (min 6 characters)',
+    consent:'I agree that ChainShield may use my mobile number and location to send risk alerts. I can ask for my data to be deleted.',
+    tab_ask:'Ask AI', ask_ph:'Ask about your orders or ChainShield', ask_send:'Send', ask_hello:'Hi! I am the ChainShield assistant. Ask me about your orders, risks and alerts, suppliers, consent, plans, or how ChainShield works.', ai_on:'AI connected', ai_off:'Basic answers (AI not running)', chip1:'Which orders are at risk?', chip2:'How does switching to a backup supplier work?', chip3:'What does the free plan include?', chip4:'Why should I trust an alert?', chat_fail:'The assistant could not answer. Please try again.', tab_chain:'Chain Details', my_account:'My Account', order_history:'Order History', save:'Save', acct_type:'Account type', consent_on:'Consent given on', live_box:'Order live location', trk_title:'Order Current Location', trk_city:'City', trk_stage:'Stage', stage1:'Supplier to MSME Owner', trk_btn:'Request Driver Live Location', trk_none:'Create an order first.', trk_sent:'Request sent to {name} on WhatsApp. When the driver approves, the location will appear here.', no_orders:'No orders yet', due:'due', tab_dash:'Dashboard', tab_suppliers:'Suppliers', tab_clients:'Clients', tab_transporters:'Transporters', tab_orders:'Orders', tab_risk:'Risk and alerts', tab_sap:'SAP tools', tab_settings:'Settings',
+    language:'Language', logout:'Log out', soon_title:'Coming soon', soon_text:'The supplier and client sides are being built next. For now the full site is for MSME owners.',
+    add_supplier:'Add a supplier', add_client:'Add a client', add_transporter:'Add a transporter',
+    list_supplier:'Your suppliers', list_client:'Your clients', list_transporter:'Your transporters',
+    f_name:'Name', f_address:'Address (with city)', f_phone:'Phone number', f_otp:'OTP', add_btn:'Add',
+    consent_note:'They get an OTP on WhatsApp. Their OTP is their consent to receive ChainShield messages. (Prototype OTP: 123456)',
+    main:'Main supplier', alternative:'Alternative supplier', set_main:'Set as main', set_alt:'Set as alternative', consented:'Consent given', no_loc:'City not recognised: add the city name in the address', none_yet:'None yet',
+    create_order:'Create an order', order_hint:'Only main suppliers can be used in an order. Alternative suppliers are kept as backups.', add_line:'+ Supplier line', create_btn:'Create order', your_orders:'Your orders',
+    check_risk:'Check risk now', demo_weather:'Demo: orange weather at Valsad', alerts:'Alerts', tracking:'Driver tracking', update_pos:'Update position',
+    track_note:'Sends the position by hand for now. WhatsApp location sharing comes next.', sac_note:'Planned: the full impact dashboard. For now this page shows the numbers from our own data.',
+    joule_note:'Planned for a future release. Until then, help is a built-in assistant.' },
+  hi: { tagline:'आपके कारोबार की सुरक्षा, 24/7', pt1:'रुकावट आने से पहले चेतावनी', pt2:'जोखिम में पड़ा पैसा, सरल भाषा में', pt3:'WhatsApp पर एक टैप में बैकअप सप्लायर',
+    phone:'फ़ोन नंबर', password:'पासवर्ड', forgot:'पासवर्ड भूल गए?', get_otp:'OTP पाएँ', enter_otp:'OTP डालें', login:'लॉग इन', register:'पंजीकरण',
+    login_btn:'लॉग इन', register_btn:'पंजीकरण करें', reset_btn:'पासवर्ड रीसेट करें', back_login:'लॉग इन पर वापस',
+    agree:'आगे बढ़कर, आप हमारे', terms:'नियमों', and:'और', policies:'नीतियों से सहमत हैं',
+    r_business:'MSME मालिक', r_supplier:'सप्लायर', r_client:'क्लाइंट', name:'कारोबार का नाम', new_pw:'पासवर्ड बनाएँ (कम से कम 6 अक्षर)',
+    consent:'मैं सहमत हूँ कि ChainShield जोखिम अलर्ट भेजने के लिए मेरा मोबाइल नंबर और लोकेशन इस्तेमाल कर सकता है। मैं अपना डेटा हटाने के लिए कह सकता हूँ।',
+    tab_ask:'AI से पूछें', ask_ph:'अपने ऑर्डर या ChainShield के बारे में पूछें', ask_send:'भेजें', ask_hello:'नमस्ते! मैं ChainShield सहायक हूँ। मुझसे अपने ऑर्डर, रिस्क और अलर्ट, सप्लायर, सहमति, प्लान या ChainShield के काम करने के बारे में पूछें।', ai_on:'AI चालू है', ai_off:'सामान्य जवाब (AI बंद है)', chip1:'कौन से ऑर्डर जोखिम में हैं?', chip2:'बैकअप सप्लायर पर स्विच कैसे होता है?', chip3:'फ्री प्लान में क्या मिलता है?', chip4:'मुझे अलर्ट पर भरोसा क्यों करना चाहिए?', chat_fail:'सहायक जवाब नहीं दे सका। कृपया दोबारा कोशिश करें।', tab_chain:'चेन विवरण', my_account:'मेरा खाता', order_history:'ऑर्डर इतिहास', save:'सेव करें', acct_type:'खाते का प्रकार', consent_on:'सहमति की तारीख', live_box:'ऑर्डर की लाइव लोकेशन', trk_title:'ऑर्डर की मौजूदा लोकेशन', trk_city:'शहर', trk_stage:'चरण', stage1:'सप्लायर से MSME मालिक तक', trk_btn:'ड्राइवर की लाइव लोकेशन माँगें', trk_none:'पहले एक ऑर्डर बनाएँ।', trk_sent:'{name} को WhatsApp पर अनुरोध भेजा गया। ड्राइवर के मंज़ूर करने पर लोकेशन यहाँ दिखेगी।', no_orders:'अभी कोई ऑर्डर नहीं', due:'देय', tab_dash:'डैशबोर्ड', tab_suppliers:'सप्लायर', tab_clients:'क्लाइंट', tab_transporters:'ट्रांसपोर्टर', tab_orders:'ऑर्डर', tab_risk:'रिस्क और अलर्ट', tab_sap:'SAP टूल', tab_settings:'सेटिंग्स',
+    language:'भाषा', logout:'लॉग आउट', soon_title:'जल्द आ रहा है', soon_text:'सप्लायर और क्लाइंट वाले हिस्से अगले चरण में बन रहे हैं। अभी पूरी साइट MSME मालिकों के लिए है।',
+    add_supplier:'सप्लायर जोड़ें', add_client:'क्लाइंट जोड़ें', add_transporter:'ट्रांसपोर्टर जोड़ें',
+    list_supplier:'आपके सप्लायर', list_client:'आपके क्लाइंट', list_transporter:'आपके ट्रांसपोर्टर',
+    f_name:'नाम', f_address:'पता (शहर के साथ)', f_phone:'फ़ोन नंबर', f_otp:'OTP', add_btn:'जोड़ें',
+    consent_note:'उन्हें WhatsApp पर OTP मिलेगा। उनका OTP ही ChainShield के संदेश पाने की उनकी सहमति है। (प्रोटोटाइप OTP: 123456)',
+    main:'मुख्य सप्लायर', alternative:'वैकल्पिक सप्लायर', set_main:'मुख्य बनाएँ', set_alt:'वैकल्पिक बनाएँ', consented:'सहमति मिली', no_loc:'शहर पहचाना नहीं गया: पते में शहर का नाम लिखें', none_yet:'अभी कोई नहीं',
+    create_order:'ऑर्डर बनाएँ', order_hint:'ऑर्डर में सिर्फ़ मुख्य सप्लायर चुने जा सकते हैं। वैकल्पिक सप्लायर बैकअप के लिए रहते हैं।', add_line:'+ सप्लायर लाइन', create_btn:'ऑर्डर बनाएँ', your_orders:'आपके ऑर्डर',
+    check_risk:'अभी रिस्क जाँचें', demo_weather:'डेमो: वलसाड में ऑरेंज मौसम', alerts:'अलर्ट', tracking:'ड्राइवर ट्रैकिंग', update_pos:'लोकेशन अपडेट करें',
+    track_note:'अभी लोकेशन हाथ से भेजी जाती है। WhatsApp लोकेशन अगला चरण है।', sac_note:'योजना: पूरा इम्पैक्ट डैशबोर्ड। अभी यह पेज हमारे अपने डेटा के आँकड़े दिखाता है।',
+    joule_note:'भविष्य के संस्करण में आएगा। तब तक मदद के लिए बना-बनाया सहायक रहेगा।' },
+};
+let lang = localStorage.getItem('cs_lang') || 'en';
+const t = (k) => (I18N[lang] && I18N[lang][k]) || I18N.en[k] || k;
+function applyLang() {
+  document.documentElement.lang = lang;
+  document.querySelectorAll('[data-i]').forEach((el) => { el.textContent = t(el.dataset.i); });
+  document.querySelectorAll('[data-p]').forEach((el) => { el.placeholder = t(el.dataset.p); });
+  $('lang').value = lang; $('slang').value = lang;
+  if (me && me.role === 'business') { buildTabs(); buildPartnerSections(); buildSubtabs(); renderLists(); fillAccount(); renderChips(); }
+}
+function pickLang(l) { lang = l; localStorage.setItem('cs_lang', l); applyLang(); }
+async function saveLang(l) { pickLang(l); if (token) { await api('PUT', '/me', { language: l }); } toast('OK'); }
+
+/* ---------- login, register, forgot password ---------- */
+function mode(m) {
+  ['log', 'reg', 'forgot'].forEach((x) => $('f-' + x).classList.toggle('hide', x !== m));
+  $('tg-log').classList.toggle('on', m === 'log'); $('tg-reg').classList.toggle('on', m === 'reg');
+  $('toggle').classList.toggle('hide', m === 'forgot'); $('otpnote').textContent = '';
+}
+async function sendOtp(field) { const r = await api('POST', '/auth/otp', { mobile: $(field).value }); $('otpnote').textContent = r.note || 'OTP sent'; }
+async function getLoginOtp() { const r = await api('POST', '/auth/login', { mobile: $('lmobile').value, password: $('lpw').value }); $('otpnote').textContent = r.note || 'OTP sent'; }
+async function doVerify() { const r = await api('POST', '/auth/verify', { mobile: $('lmobile').value, otp: $('lotp').value }); token = r.token; localStorage.setItem('cs_token', token); start(); }
+async function doRegister() {
+  const r = await api('POST', '/auth/register', { mobile: $('mobile').value, otp: $('otp').value, password: $('pw').value, role: $('role').value, name: $('bname').value || undefined, language: lang, consent: $('consent').checked });
+  token = r.token; localStorage.setItem('cs_token', token); start();
+}
+async function doReset() {
+  await api('POST', '/auth/reset-password', { mobile: $('fmobile').value, otp: $('fotp').value, password: $('fpw').value });
+  $('lmobile').value = $('fmobile').value; mode('log'); toast(lang === 'hi' ? 'पासवर्ड बदल गया। अब लॉग इन करें।' : 'Password changed. Please log in.');
+}
+function logout() { token = ''; me = null; localStorage.removeItem('cs_token'); location.reload(); }
+
+/* ---------- tabs ---------- */
+const TABS = ['dash', 'chain', 'orders', 'risk', 'sap', 'ask'];
+const PAGES = ['account', 'history', 'settings']; // opened from the account menu, not from the tab row
+let current = 'dash';
+function buildTabs() { $('tabs').innerHTML = TABS.map((k) => '<button class="tab' + (k === current ? ' on' : '') + '" id="b-' + k + '" onclick="show(\'' + k + '\')">' + t('tab_' + k) + '</button>').join(''); }
+function show(k) {
+  current = k;
+  [...TABS, ...PAGES].forEach((x) => $('t-' + x).classList.toggle('hide', x !== k));
+  TABS.forEach((x) => $('b-' + x).classList.toggle('on', x === k));
+  $('board').classList.toggle('tl', k === TABS[0]);
+  closeMenu();
+  if (k === 'dash') loadDash();
+  if (k === 'risk') loadAlerts();
+  if (k === 'orders') resetLines();
+  if (k === 'history') loadHistory();
+  if (k === 'account') fillAccount();
+  if (k === 'ask') openChat();
+}
+/* account menu */
+function toggleMenu(e) { e.stopPropagation(); $('menu').classList.toggle('hide'); }
+function closeMenu() { $('menu').classList.add('hide'); }
+document.addEventListener('click', (e) => { if (!e.target.closest('.acct')) closeMenu(); });
+function togglePw(btn) {
+  const input = btn.parentElement.querySelector('input'); const show = input.type === 'password';
+  input.type = show ? 'text' : 'password';
+  btn.querySelectorAll('.e-on').forEach((x) => { x.style.display = show ? 'none' : ''; });
+  btn.querySelector('.e-off').style.display = show ? '' : 'none';
+  btn.setAttribute('aria-label', show ? 'Hide password' : 'Show password');
+}
+async function start() {
+  try { me = await api('GET', '/me'); } catch (e) { token = ''; localStorage.removeItem('cs_token'); return; }
+  if (me.language && me.language !== lang) { lang = me.language; localStorage.setItem('cs_lang', lang); }
+  document.body.classList.remove('auth'); $('app').classList.remove('hide');
+  const nm = me.name || me.mobile;
+  $('who').innerHTML = '<span>' + esc(nm) + '</span><span class="dp">' + esc(nm.trim().charAt(0).toUpperCase()) + '</span>';
+  if (me.role !== 'business') { $('soon').classList.remove('hide'); $('shell').classList.add('hide'); applyLang(); return; }
+  applyLang(); buildTabs(); buildPartnerSections(); buildSubtabs(); await refresh(); show('dash');
+}
+
+/* ---------- suppliers, clients, transporters ---------- */
+function partnerSection(role) {
+  const sup = role === 'supplier';
+  return '<div class="card"><h2>' + t('add_' + role) + '</h2>' +
+    '<div class="grid2"><input id="' + role + '-name" placeholder="' + t('f_name') + '"><input id="' + role + '-address" placeholder="' + t('f_address') + '"></div>' +
+    '<div class="grid2"><input id="' + role + '-mobile" placeholder="' + t('f_phone') + '" inputmode="numeric" maxlength="10">' +
+    (sup ? '<select id="supplier-type"><option value="main">' + t('main') + '</option><option value="alternative">' + t('alternative') + '</option></select>' : '<span></span>') + '</div>' +
+    '<div class="row"><input id="' + role + '-otp" placeholder="' + t('f_otp') + '" inputmode="numeric" maxlength="6"><button class="ghost" onclick="partnerOtp(\'' + role + '\')">' + t('get_otp') + '</button></div>' +
+    '<p class="muted" id="' + role + '-note">' + t('consent_note') + '</p>' +
+    '<button onclick="addPartner(\'' + role + '\')">' + t('add_btn') + '</button></div>' +
+    '<div class="card"><h2>' + t('list_' + role) + '</h2><div id="' + role + '-list" class="plist"></div></div>';
+}
+function buildPartnerSections() { ['supplier', 'client', 'transporter'].forEach((r) => { $('p-' + r).innerHTML = partnerSection(r); }); }
+let subRole = 'supplier';
+function buildSubtabs() {
+  $('subtabs').innerHTML = ['supplier', 'client', 'transporter'].map((r) => '<button class="sub' + (r === subRole ? ' on' : '') + '" onclick="showSub(\'' + r + '\')">' + t('tab_' + r + 's') + '</button>').join('');
+  ['supplier', 'client', 'transporter'].forEach((r) => $('p-' + r).classList.toggle('hide', r !== subRole));
+}
+function showSub(r) { subRole = r; buildSubtabs(); }
+async function partnerOtp(role) { const r = await api('POST', '/partners/otp', { mobile: $(role + '-mobile').value }); $(role + '-note').textContent = r.note; }
+async function addPartner(role) {
+  const body = { name: $(role + '-name').value, role, mobile: $(role + '-mobile').value, address: $(role + '-address').value, otp: $(role + '-otp').value };
+  if (role === 'supplier') body.supplierType = $('supplier-type').value;
+  const p = await api('POST', '/partners', body);
+  ['name', 'address', 'mobile', 'otp'].forEach((f) => { $(role + '-' + f).value = ''; });
+  toast(p.name + ' ' + (lang === 'hi' ? 'जोड़ा गया' : 'added')); await refresh();
+}
+async function setType(id, supplierType) { await api('PUT', '/partners/' + id, { supplierType }); toast('OK'); await refresh(); }
+function renderLists() {
+  ['supplier', 'client', 'transporter'].forEach((role) => {
+    const box = $(role + '-list'); if (!box) return;
+    const list = partners.filter((p) => p.role === role);
+    box.innerHTML = list.length ? list.map((p) =>
+      '<div class="pitem"><b>' + esc(p.name) + '</b>' +
+      '<div class="muted">' + esc(p.mobile) + ' &middot; ' + esc(p.address) + '</div>' +
+      '<div style="margin:6px 0">' +
+        (role === 'supplier' ? '<span class="badge ' + (p.supplierType === 'main' ? 'b-main' : 'b-alt') + '">' + t(p.supplierType === 'main' ? 'main' : 'alternative') + '</span>' : '') +
+        (p.consentAt ? '<span class="badge b-ok">&#10003; ' + t('consented') + '</span>' : '') +
+        (p.lat === null ? '<span class="badge b-warn">' + t('no_loc') + '</span>' : '') +
+      '</div>' +
+      (role === 'supplier' ? '<button class="ghost small" onclick="setType(\'' + esc(p.partnerId) + '\',\'' + (p.supplierType === 'main' ? 'alternative' : 'main') + '\')">' + t(p.supplierType === 'main' ? 'set_alt' : 'set_main') + '</button>' : '') +
+      '</div>').join('') : '<span class="muted">' + t('none_yet') + '</span>';
+  });
+}
+
+/* ---------- orders, risk, alerts, dashboard ---------- */
+async function refresh() {
+  partners = await api('GET', '/partners'); orders = await api('GET', '/orders');
+  renderLists();
+  const opt = (list, f) => list.map(f).join('');
+  $('oc').innerHTML = opt(partners.filter((p) => p.role === 'client'), (p) => '<option value="' + p.partnerId + '">' + esc(p.name) + '</option>');
+  $('trk-order').innerHTML = opt(orders, (o) => '<option value="' + o.orderId + '">' + o.orderId + ' (' + o.dueDate + ')</option>');
+  $('ro').innerHTML = opt(orders, (o) => '<option value="' + o.orderId + '">' + o.orderId + ' (' + o.dueDate + ')</option>');
+  $('olist').innerHTML = orders.length ? orders.map((o) => '<div><b>' + o.orderId + '</b> due ' + o.dueDate + ' &middot; ' + o.lines.map((l) => esc((partners.find((p) => p.partnerId === l.supplierId) || {}).name || l.supplierId) + ' ' + rs(l.valueRupees) + ' [' + l.status + ']').join(', ') + '</div>').join('') : t('none_yet');
+  resetLines();
+}
+function resetLines() { $('olines').innerHTML = ''; addLine(); }
+function addLine() {
+  const d = document.createElement('div'); d.className = 'row';
+  d.innerHTML = '<select class="ls">' + partners.filter((p) => p.role === 'supplier' && p.supplierType === 'main').map((p) => '<option value="' + p.partnerId + '">' + esc(p.name) + '</option>').join('') + '</select><input class="lv" placeholder="\u20B9" inputmode="numeric">';
+  $('olines').appendChild(d);
+}
+async function addOrder() {
+  const lines = [...$('olines').children].map((r) => ({ supplierId: r.querySelector('.ls').value, valueRupees: parseInt(r.querySelector('.lv').value, 10) })).filter((l) => l.supplierId && l.valueRupees);
+  await api('POST', '/orders', { clientId: $('oc').value, dueDate: $('od').value, lines });
+  toast('OK'); await refresh();
+}
+async function runRisk() {
+  const orderId = $('ro').value; if (!orderId) return;
+  const r = await api('POST', '/risk/evaluate', { orderId });
+  $('rout').innerHTML = r.map((x) => '<div><span class="pill ' + x.riskLevel + '">' + x.riskLevel + '</span> ' + esc((partners.find((p) => p.partnerId === x.supplierId) || {}).name || x.supplierId) + ': ' + rs(x.valueAtRiskRupees) + '<br><span class="muted">' + esc(x.reason) + '</span></div>').join('');
+  await api('POST', '/alerts', { orderId }); loadAlerts();
+}
+async function loadAlerts() {
+  const a = await api('GET', '/alerts');
+  $('alist').innerHTML = a.length ? a.map((x) => '<div class="pitem" style="margin-bottom:8px"><span class="pill ' + x.severity + '">' + x.severity + '</span> ' + esc(x.message) + '<div class="row">' +
+    (x.status === 'open' ? x.options.map((o) => '<button class="ghost small" onclick="choose(\'' + x.alertId + '\',\'' + o.key + '\')">' + o.key.replace('_', ' ') + ' (+' + rs(o.extraCostRupees) + ')</button>').join('') : '<span class="muted">' + esc(x.chosen) + ' &middot; ' + rs(x.savedRupees) + '</span>') + '</div></div>').join('') : '-';
+}
+async function choose(id, option) { await api('POST', '/alerts/' + id + '/choose', { option }); toast('OK'); await refresh(); loadAlerts(); }
+async function demoWeather() { await api('POST', '/dev/weather', { lat: 20.5992, lng: 72.9342, radiusKm: 30, level: 'orange', label: 'Heavy rain' }); toast('Orange weather set at Valsad'); }
+async function requestLocation() {
+  const orderId = $('trk-order').value;
+  if (!orderId) { toast(t('trk_none')); return; }
+  const r = await api('POST', '/tracking/request', { orderId });
+  $('trk-note').textContent = t('trk_sent').replace('{name}', r.transporterName);
+}
+async function loadHistory() {
+  const [os, al] = await Promise.all([api('GET', '/orders'), api('GET', '/alerts')]);
+  const name = (id) => (partners.find((p) => p.partnerId === id) || {}).name || id;
+  $('hlist').innerHTML = os.length ? os.slice().reverse().map((o) => {
+    const decisions = al.filter((a) => a.orderId === o.orderId && a.status === 'resolved');
+    return '<div class="pitem"><b>' + o.orderId + '</b> <span class="badge b-alt">' + esc(o.status) + '</span>' +
+      '<div class="muted">' + esc(name(o.clientId)) + ' &middot; ' + t('due') + ' ' + esc(o.dueDate) + '</div>' +
+      '<div>' + o.lines.map((l) => esc(name(l.supplierId)) + ' ' + rs(l.valueRupees) + ' [' + esc(l.status) + ']').join('<br>') + '</div>' +
+      decisions.map((a) => '<div class="muted">' + esc(a.chosen.replace('_', ' ')) + ' &middot; ' + rs(a.savedRupees) + '</div>').join('') + '</div>';
+  }).join('') : '<span class="muted">' + t('no_orders') + '</span>';
+}
+function fillAccount() {
+  if (!me) return;
+  $('ac-name').value = me.name || ''; $('ac-mobile').value = me.mobile || ''; $('ac-address').value = me.address || '';
+  $('ac-role').value = t(me.role === 'business' ? 'r_business' : 'r_' + me.role);
+  $('ac-consent').textContent = me.consentAt ? t('consent_on') + ' ' + me.consentAt.replace('T', ' ').slice(0, 16) : '';
+}
+async function saveAccount() {
+  me = await api('PUT', '/me', { name: $('ac-name').value, address: $('ac-address').value });
+  const nm = me.name || me.mobile;
+  $('who').innerHTML = '<span>' + esc(nm) + '</span><span class="dp">' + esc(nm.trim().charAt(0).toUpperCase()) + '</span>';
+  toast('OK');
+}
+/* ---------- Ask AI ---------- */
+let chatHistory = [];
+function addMsg(who, text, note) {
+  const d = document.createElement('div'); d.className = 'msg ' + who;
+  d.innerHTML = esc(text).replace(/\n/g, '<br>') + (note ? '<small>' + esc(note) + '</small>' : '');
+  $('chat-log').appendChild(d); $('chat-log').scrollTop = $('chat-log').scrollHeight; return d;
+}
+function renderChips() { const el = $('chips'); if (!el) return; el.innerHTML = [1, 2, 3, 4].map((i) => '<button class="chip" onclick="sendChat(this.textContent)">' + esc(t('chip' + i)) + '</button>').join(''); }
+async function openChat() {
+  renderChips();
+  if (!$('chat-log').children.length) addMsg('ai', t('ask_hello'));
+  try {
+    const s = await api('GET', '/ai/status');
+    $('ai-status').className = 'badge ' + (s.available ? 'b-ok' : 'b-warn');
+    $('ai-status').textContent = s.available ? t('ai_on') + ' \u00B7 ' + s.model : t('ai_off');
+  } catch (e) { /* status is optional */ }
+  $('chat-in').focus();
+}
+async function sendChat(text) {
+  const q = (typeof text === 'string' ? text : $('chat-in').value).trim(); if (!q) return;
+  $('chat-in').value = ''; addMsg('user', q);
+  const wait = addMsg('ai', ''); wait.innerHTML = '<span class="dots"><span></span><span></span><span></span></span>';
+  try {
+    const r = await api('POST', '/ai/chat', { message: q, language: lang, history: chatHistory });
+    chatHistory.push({ role: 'user', content: q }, { role: 'assistant', content: r.reply }); chatHistory = chatHistory.slice(-8);
+    wait.remove(); addMsg('ai', r.reply, r.source === 'ollama' ? 'AI \u00B7 ' + r.model : (lang === 'hi' ? 'सामान्य जवाब' : 'Basic answer'));
+  } catch (e) { wait.remove(); addMsg('ai', t('chat_fail')); }
+}
+async function loadDash() {
+  const d = await api('GET', '/dashboard');
+  const s = (l, v) => '<div class="stat"><span class="muted">' + l + '</span><b>' + v + '</b></div>';
+  $('dash').innerHTML = s('Orders', d.orders) + s('Order value', rs(d.totalOrderValueRupees)) + s('Value at risk', rs(d.valueAtRiskRupees)) + s('Open alerts', d.openAlerts) + s('Decisions made', d.decisionsMade) + s('Saved', rs(d.savedRupees));
+}
+applyLang();
+if (token) start();
+</script>
+</body>
+</html>

@@ -1,0 +1,98 @@
+{
+  "counters": {
+    "biz": 1,
+    "par": 4,
+    "ord": 1
+  },
+  "businesses": [
+    {
+      "businessId": "biz_001",
+      "mobile": "9999999999",
+      "name": "Shah Textiles",
+      "role": "business",
+      "address": "Surat, Gujarat",
+      "lat": 21.1702,
+      "lng": 72.8311
+    }
+  ],
+  "partners": [
+    {
+      "partnerId": "par_001",
+      "businessId": "biz_001",
+      "name": "Supplier X",
+      "role": "supplier",
+      "mobile": "9876500001",
+      "address": "Vapi, Gujarat",
+      "lat": 20.3893,
+      "lng": 72.9106,
+      "supplierType": "main",
+      "consentAt": "2026-11-20 10:00 IST"
+    },
+    {
+      "partnerId": "par_002",
+      "businessId": "biz_001",
+      "name": "Supplier Y",
+      "role": "supplier",
+      "mobile": "9876500002",
+      "address": "Bhiwandi, Maharashtra",
+      "lat": 19.2813,
+      "lng": 73.0483,
+      "supplierType": "main",
+      "consentAt": "2026-11-20 10:00 IST"
+    },
+    {
+      "partnerId": "par_003",
+      "businessId": "biz_001",
+      "name": "Mumbai Retail Client",
+      "role": "client",
+      "mobile": "9876500003",
+      "address": "Mumbai, Maharashtra",
+      "lat": 19.076,
+      "lng": 72.8777,
+      "supplierType": null,
+      "consentAt": "2026-11-20 10:00 IST"
+    },
+    {
+      "partnerId": "par_004",
+      "businessId": "biz_001",
+      "name": "Supplier Z (backup)",
+      "role": "supplier",
+      "mobile": "9876500004",
+      "address": "Ankleshwar, Gujarat",
+      "lat": 21.6264,
+      "lng": 73.0152,
+      "supplierType": "alternative",
+      "consentAt": "2026-11-20 10:00 IST"
+    }
+  ],
+  "orders": [
+    {
+      "orderId": "ord_001",
+      "businessId": "biz_001",
+      "clientId": "par_003",
+      "status": "placed",
+      "dueDate": "2026-12-05",
+      "bufferDays": 2,
+      "lines": [
+        {
+          "supplierId": "par_001",
+          "valueRupees": 400000,
+          "status": "ok"
+        },
+        {
+          "supplierId": "par_002",
+          "valueRupees": 200000,
+          "status": "ok"
+        }
+      ],
+      "routePoints": [
+        {
+          "label": "Valsad (NH48)",
+          "lat": 20.5992,
+          "lng": 72.9342
+        }
+      ],
+      "createdAt": "2026-11-20T11:49:00.000+05:30"
+    }
+  ]
+}

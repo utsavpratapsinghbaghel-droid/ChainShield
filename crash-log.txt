@@ -1,0 +1,159 @@
+Retrieving logs for app chainshield in org 4f7634e2trial / space dev as utsavpratapsinghbaghel@gmail.com...
+
+   2026-11-25T06:21:55.91+0530 [API/8] OUT Starting app with guid 93ba3049-80bb-4f87-908d-0439b8d6b304
+   2026-11-25T06:21:56.15+0530 [CELL/0] OUT Cell 4401fcd0-006d-4ceb-9b51-aa22a1b186cf creating container for instance d8105aad-3e7a-4c2c-62b3-e2c6
+   2026-11-25T06:21:56.92+0530 [CELL/0] OUT Security group rules were updated
+   2026-11-25T06:21:57.03+0530 [CELL/0] OUT Cell 4401fcd0-006d-4ceb-9b51-aa22a1b186cf successfully created container for instance d8105aad-3e7a-4c2c-62b3-e2c6
+   2026-11-25T06:21:59.25+0530 [CELL/0] OUT Downloading droplet...
+   2026-11-25T06:22:09.24+0530 [CELL/0] OUT Downloaded droplet (96.5M)
+   2026-11-25T06:22:09.24+0530 [CELL/0] OUT Starting health monitoring of container
+   2026-11-25T06:22:09.40+0530 [APP/PROC/WEB/0] OUT Invoking pre-start scripts.
+   2026-11-25T06:22:09.79+0530 [APP/PROC/WEB/0] OUT Invoking start command.
+   2026-11-25T06:22:10.03+0530 [APP/PROC/WEB/0] ERR ChainShield startup failed: Error: Connection failed (RTE:[200117] Failed to initiate any authentication method. Please ensure all relevant connection properties have been supplied correctly. X.509: No key store or PEM provided
+   2026-11-25T06:22:10.03+0530 [APP/PROC/WEB/0] ERR Kerberos error. Major: "No credentials were supplied, or the credentials were unavailable or inaccessible [458752]", minor: "No Kerberos credentials available (default cache: FILE:/tmp/krb5cc_2000) [2529639053/-1765328243]" (10.141.250.88:42794 -> 5e9723cb-c5c2-4c0e-bef4-f578566d9c3a.hana.prod-ap21.hanacloud.ondemand.com:443))
+   2026-11-25T06:22:10.03+0530 [APP/PROC/WEB/0] ERR at Socket.<anonymous> (/home/vcap/deps/0/node_modules/@sap/hana-client/lib/index.js:53:13)
+   2026-11-25T06:22:10.03+0530 [APP/PROC/WEB/0] ERR at Socket.emit (node:events:514:28)
+   2026-11-25T06:22:10.03+0530 [APP/PROC/WEB/0] ERR at addChunk (node:internal/streams/readable:569:12)
+   2026-11-25T06:22:10.03+0530 [APP/PROC/WEB/0] ERR at readableAddChunkPushByteMode (node:internal/streams/readable:520:3)
+   2026-11-25T06:22:10.03+0530 [APP/PROC/WEB/0] ERR at Readable.push (node:internal/streams/readable:400:5)
+   2026-11-25T06:22:10.03+0530 [APP/PROC/WEB/0] ERR at Pipe.onStreamRead (node:internal/stream_base_commons:194:23) {
+   2026-11-25T06:22:10.03+0530 [APP/PROC/WEB/0] ERR code: -10709,
+   2026-11-25T06:22:10.03+0530 [APP/PROC/WEB/0] ERR sqlState: 'HY000'
+   2026-11-25T06:22:10.03+0530 [APP/PROC/WEB/0] ERR }
+   2026-11-25T06:22:10.07+0530 [APP/PROC/WEB/0] OUT Exit status 1
+   2026-11-25T06:22:18.24+0530 [CELL/0] OUT Cell 4401fcd0-006d-4ceb-9b51-aa22a1b186cf stopping instance d8105aad-3e7a-4c2c-62b3-e2c6
+   2026-11-25T06:22:18.24+0530 [CELL/0] OUT Cell 4401fcd0-006d-4ceb-9b51-aa22a1b186cf destroying container for instance d8105aad-3e7a-4c2c-62b3-e2c6
+   2026-11-25T06:22:18.25+0530 [API/8] OUT Process has crashed with type: "web"
+   2026-11-25T06:22:18.27+0530 [API/8] OUT App instance exited with guid 93ba3049-80bb-4f87-908d-0439b8d6b304 payload: {"instance" => "d8105aad-3e7a-4c2c-62b3-e2c6", "index" => 0, "cell_id" => "4401fcd0-006d-4ceb-9b51-aa22a1b186cf", "reason" => "CRASHED", "exit_description" => "APP/PROC/WEB: Exited with status 1", "crash_count" => 1, "crash_timestamp" => 1795567938234058901, "version" => "2581bd99-5166-4b82-97c9-f2952dbde5a5"}
+   2026-11-25T06:22:18.32+0530 [CELL/0] OUT Cell 3697da87-6170-41a4-acb7-9186f1527dfa creating container for instance 881ca00e-7c0d-489a-6edd-a0f7
+   2026-11-25T06:22:18.48+0530 [PROXY/0] OUT Exit status 137
+   2026-11-25T06:22:19.08+0530 [CELL/0] OUT Security group rules were updated
+   2026-11-25T06:22:19.14+0530 [CELL/0] OUT Cell 3697da87-6170-41a4-acb7-9186f1527dfa successfully created container for instance 881ca00e-7c0d-489a-6edd-a0f7
+   2026-11-25T06:22:20.83+0530 [CELL/0] OUT Cell 4401fcd0-006d-4ceb-9b51-aa22a1b186cf successfully destroyed container for instance d8105aad-3e7a-4c2c-62b3-e2c6
+   2026-11-25T06:22:21.27+0530 [CELL/0] OUT Downloading droplet...
+   2026-11-25T06:22:32.67+0530 [CELL/0] OUT Downloaded droplet (96.5M)
+   2026-11-25T06:22:32.67+0530 [CELL/0] OUT Starting health monitoring of container
+   2026-11-25T06:22:32.83+0530 [APP/PROC/WEB/0] OUT Invoking pre-start scripts.
+   2026-11-25T06:22:33.23+0530 [APP/PROC/WEB/0] OUT Invoking start command.
+   2026-11-25T06:22:33.46+0530 [APP/PROC/WEB/0] ERR ChainShield startup failed: Error: Connection failed (RTE:[200117] Failed to initiate any authentication method. Please ensure all relevant connection properties have been supplied correctly. X.509: No key store or PEM provided
+   2026-11-25T06:22:33.46+0530 [APP/PROC/WEB/0] ERR Kerberos error. Major: "No credentials were supplied, or the credentials were unavailable or inaccessible [458752]", minor: "No Kerberos credentials available (default cache: FILE:/tmp/krb5cc_2000) [2529639053/-1765328243]" (10.140.162.120:54252 -> 5e9723cb-c5c2-4c0e-bef4-f578566d9c3a.hana.prod-ap21.hanacloud.ondemand.com:443))
+   2026-11-25T06:22:33.46+0530 [APP/PROC/WEB/0] ERR at Socket.<anonymous> (/home/vcap/deps/0/node_modules/@sap/hana-client/lib/index.js:53:13)
+   2026-11-25T06:22:33.46+0530 [APP/PROC/WEB/0] ERR at Socket.emit (node:events:514:28)
+   2026-11-25T06:22:33.46+0530 [APP/PROC/WEB/0] ERR at addChunk (node:internal/streams/readable:569:12)
+   2026-11-25T06:22:33.46+0530 [APP/PROC/WEB/0] ERR at readableAddChunkPushByteMode (node:internal/streams/readable:520:3)
+   2026-11-25T06:22:33.46+0530 [APP/PROC/WEB/0] ERR at Readable.push (node:internal/streams/readable:400:5)
+   2026-11-25T06:22:33.46+0530 [APP/PROC/WEB/0] ERR at Pipe.onStreamRead (node:internal/stream_base_commons:194:23) {
+   2026-11-25T06:22:33.46+0530 [APP/PROC/WEB/0] ERR code: -10709,
+   2026-11-25T06:22:33.46+0530 [APP/PROC/WEB/0] ERR sqlState: 'HY000'
+   2026-11-25T06:22:33.46+0530 [APP/PROC/WEB/0] ERR }
+   2026-11-25T06:22:33.49+0530 [APP/PROC/WEB/0] OUT Exit status 1
+   2026-11-25T06:22:42.13+0530 [CELL/0] OUT Cell 3697da87-6170-41a4-acb7-9186f1527dfa stopping instance 881ca00e-7c0d-489a-6edd-a0f7
+   2026-11-25T06:22:42.13+0530 [CELL/0] OUT Cell 3697da87-6170-41a4-acb7-9186f1527dfa destroying container for instance 881ca00e-7c0d-489a-6edd-a0f7
+   2026-11-25T06:22:42.13+0530 [API/8] OUT Process has crashed with type: "web"
+   2026-11-25T06:22:42.15+0530 [API/8] OUT App instance exited with guid 93ba3049-80bb-4f87-908d-0439b8d6b304 payload: {"instance" => "881ca00e-7c0d-489a-6edd-a0f7", "index" => 0, "cell_id" => "3697da87-6170-41a4-acb7-9186f1527dfa", "reason" => "CRASHED", "exit_description" => "APP/PROC/WEB: Exited with status 1", "crash_count" => 2, "crash_timestamp" => 1795567962115028407, "version" => "2581bd99-5166-4b82-97c9-f2952dbde5a5"}
+   2026-11-25T06:22:42.20+0530 [CELL/0] OUT Cell 4401fcd0-006d-4ceb-9b51-aa22a1b186cf creating container for instance 90f59d8e-5198-4bd3-4696-52a6
+   2026-11-25T06:22:42.42+0530 [PROXY/0] OUT Exit status 137
+   2026-11-25T06:22:43.06+0530 [CELL/0] OUT Security group rules were updated
+   2026-11-25T06:22:43.12+0530 [CELL/0] OUT Cell 4401fcd0-006d-4ceb-9b51-aa22a1b186cf successfully created container for instance 90f59d8e-5198-4bd3-4696-52a6
+   2026-11-25T06:22:44.83+0530 [CELL/0] OUT Cell 3697da87-6170-41a4-acb7-9186f1527dfa successfully destroyed container for instance 881ca00e-7c0d-489a-6edd-a0f7
+   2026-11-25T06:22:45.32+0530 [CELL/0] OUT Downloading droplet...
+   2026-11-25T06:22:48.57+0530 [CELL/0] OUT Downloaded droplet
+   2026-11-25T06:22:48.57+0530 [CELL/0] OUT Starting health monitoring of container
+   2026-11-25T06:22:48.73+0530 [APP/PROC/WEB/0] OUT Invoking pre-start scripts.
+   2026-11-25T06:22:49.13+0530 [APP/PROC/WEB/0] OUT Invoking start command.
+   2026-11-25T06:22:49.33+0530 [APP/PROC/WEB/0] ERR ChainShield startup failed: Error: Connection failed (RTE:[200117] Failed to initiate any authentication method. Please ensure all relevant connection properties have been supplied correctly. X.509: No key store or PEM provided
+   2026-11-25T06:22:49.33+0530 [APP/PROC/WEB/0] ERR Kerberos error. Major: "No credentials were supplied, or the credentials were unavailable or inaccessible [458752]", minor: "No Kerberos credentials available (default cache: FILE:/tmp/krb5cc_2000) [2529639053/-1765328243]" (10.141.250.89:45282 -> 5e9723cb-c5c2-4c0e-bef4-f578566d9c3a.hana.prod-ap21.hanacloud.ondemand.com:443))
+   2026-11-25T06:22:49.33+0530 [APP/PROC/WEB/0] ERR at Socket.<anonymous> (/home/vcap/deps/0/node_modules/@sap/hana-client/lib/index.js:53:13)
+   2026-11-25T06:22:49.33+0530 [APP/PROC/WEB/0] ERR at Socket.emit (node:events:514:28)
+   2026-11-25T06:22:49.33+0530 [APP/PROC/WEB/0] ERR at addChunk (node:internal/streams/readable:569:12)
+   2026-11-25T06:22:49.33+0530 [APP/PROC/WEB/0] ERR at readableAddChunkPushByteMode (node:internal/streams/readable:520:3)
+   2026-11-25T06:22:49.33+0530 [APP/PROC/WEB/0] ERR at Readable.push (node:internal/streams/readable:400:5)
+   2026-11-25T06:22:49.33+0530 [APP/PROC/WEB/0] ERR at Pipe.onStreamRead (node:internal/stream_base_commons:194:23) {
+   2026-11-25T06:22:49.33+0530 [APP/PROC/WEB/0] ERR code: -10709,
+   2026-11-25T06:22:49.33+0530 [APP/PROC/WEB/0] ERR sqlState: 'HY000'
+   2026-11-25T06:22:49.33+0530 [APP/PROC/WEB/0] ERR }
+   2026-11-25T06:22:49.37+0530 [APP/PROC/WEB/0] OUT Exit status 1
+   2026-11-25T06:22:58.29+0530 [CELL/0] OUT Cell 4401fcd0-006d-4ceb-9b51-aa22a1b186cf stopping instance 90f59d8e-5198-4bd3-4696-52a6
+   2026-11-25T06:22:58.29+0530 [CELL/0] OUT Cell 4401fcd0-006d-4ceb-9b51-aa22a1b186cf destroying container for instance 90f59d8e-5198-4bd3-4696-52a6
+   2026-11-25T06:22:58.31+0530 [API/8] OUT Process has crashed with type: "web"
+   2026-11-25T06:22:58.33+0530 [API/8] OUT App instance exited with guid 93ba3049-80bb-4f87-908d-0439b8d6b304 payload: {"instance" => "90f59d8e-5198-4bd3-4696-52a6", "index" => 0, "cell_id" => "4401fcd0-006d-4ceb-9b51-aa22a1b186cf", "reason" => "CRASHED", "exit_description" => "APP/PROC/WEB: Exited with status 1", "crash_count" => 3, "crash_timestamp" => 1795567978289943704, "version" => "2581bd99-5166-4b82-97c9-f2952dbde5a5"}
+   2026-11-25T06:22:58.52+0530 [PROXY/0] OUT Exit status 137
+   2026-11-25T06:23:00.65+0530 [CELL/0] OUT Cell 4401fcd0-006d-4ceb-9b51-aa22a1b186cf successfully destroyed container for instance 90f59d8e-5198-4bd3-4696-52a6
+   2026-11-25T06:23:52.03+0530 [CELL/0] OUT Cell 3697da87-6170-41a4-acb7-9186f1527dfa creating container for instance a15177dc-38c8-4be0-5882-a137
+   2026-11-25T06:23:52.82+0530 [CELL/0] OUT Security group rules were updated
+   2026-11-25T06:23:52.87+0530 [CELL/0] OUT Cell 3697da87-6170-41a4-acb7-9186f1527dfa successfully created container for instance a15177dc-38c8-4be0-5882-a137
+   2026-11-25T06:23:54.38+0530 [CELL/0] OUT Downloading droplet...
+   2026-11-25T06:23:57.84+0530 [CELL/0] OUT Downloaded droplet
+   2026-11-25T06:23:57.84+0530 [CELL/0] OUT Starting health monitoring of container
+   2026-11-25T06:23:58.13+0530 [APP/PROC/WEB/0] OUT Invoking pre-start scripts.
+   2026-11-25T06:23:58.48+0530 [APP/PROC/WEB/0] OUT Invoking start command.
+   2026-11-25T06:23:58.71+0530 [APP/PROC/WEB/0] ERR ChainShield startup failed: Error: Connection failed (RTE:[200117] Failed to initiate any authentication method. Please ensure all relevant connection properties have been supplied correctly. X.509: No key store or PEM provided
+   2026-11-25T06:23:58.71+0530 [APP/PROC/WEB/0] ERR Kerberos error. Major: "No credentials were supplied, or the credentials were unavailable or inaccessible [458752]", minor: "No Kerberos credentials available (default cache: FILE:/tmp/krb5cc_2000) [2529639053/-1765328243]" (10.140.162.121:60010 -> 5e9723cb-c5c2-4c0e-bef4-f578566d9c3a.hana.prod-ap21.hanacloud.ondemand.com:443))
+   2026-11-25T06:23:58.71+0530 [APP/PROC/WEB/0] ERR at Socket.<anonymous> (/home/vcap/deps/0/node_modules/@sap/hana-client/lib/index.js:53:13)
+   2026-11-25T06:23:58.71+0530 [APP/PROC/WEB/0] ERR at Socket.emit (node:events:514:28)
+   2026-11-25T06:23:58.71+0530 [APP/PROC/WEB/0] ERR at addChunk (node:internal/streams/readable:569:12)
+   2026-11-25T06:23:58.71+0530 [APP/PROC/WEB/0] ERR at readableAddChunkPushByteMode (node:internal/streams/readable:520:3)
+   2026-11-25T06:23:58.71+0530 [APP/PROC/WEB/0] ERR at Readable.push (node:internal/streams/readable:400:5)
+   2026-11-25T06:23:58.71+0530 [APP/PROC/WEB/0] ERR at Pipe.onStreamRead (node:internal/stream_base_commons:194:23) {
+   2026-11-25T06:23:58.71+0530 [APP/PROC/WEB/0] ERR code: -10709,
+   2026-11-25T06:23:58.71+0530 [APP/PROC/WEB/0] ERR sqlState: 'HY000'
+   2026-11-25T06:23:58.71+0530 [APP/PROC/WEB/0] ERR }
+   2026-11-25T06:23:58.75+0530 [APP/PROC/WEB/0] OUT Exit status 1
+   2026-11-25T06:24:07.28+0530 [CELL/0] OUT Cell 3697da87-6170-41a4-acb7-9186f1527dfa stopping instance a15177dc-38c8-4be0-5882-a137
+   2026-11-25T06:24:07.28+0530 [CELL/0] OUT Cell 3697da87-6170-41a4-acb7-9186f1527dfa destroying container for instance a15177dc-38c8-4be0-5882-a137
+   2026-11-25T06:24:07.29+0530 [API/8] OUT Process has crashed with type: "web"
+   2026-11-25T06:24:07.31+0530 [API/8] OUT App instance exited with guid 93ba3049-80bb-4f87-908d-0439b8d6b304 payload: {"instance" => "a15177dc-38c8-4be0-5882-a137", "index" => 0, "cell_id" => "3697da87-6170-41a4-acb7-9186f1527dfa", "reason" => "CRASHED", "exit_description" => "APP/PROC/WEB: Exited with status 1", "crash_count" => 4, "crash_timestamp" => 1795568047276745579, "version" => "2581bd99-5166-4b82-97c9-f2952dbde5a5"}
+   2026-11-25T06:24:07.61+0530 [PROXY/0] OUT Exit status 137
+   2026-11-25T06:24:09.52+0530 [CELL/0] OUT Cell 3697da87-6170-41a4-acb7-9186f1527dfa successfully destroyed container for instance a15177dc-38c8-4be0-5882-a137
+   2026-11-25T06:25:23.37+0530 [CELL/0] OUT Cell 4401fcd0-006d-4ceb-9b51-aa22a1b186cf creating container for instance 1346bf42-e823-4f13-7628-7075
+   2026-11-25T06:25:24.18+0530 [CELL/0] OUT Security group rules were updated
+   2026-11-25T06:25:24.27+0530 [CELL/0] OUT Cell 4401fcd0-006d-4ceb-9b51-aa22a1b186cf successfully created container for instance 1346bf42-e823-4f13-7628-7075
+   2026-11-25T06:25:26.84+0530 [CELL/0] OUT Downloading droplet...
+   2026-11-25T06:25:30.16+0530 [CELL/0] OUT Downloaded droplet
+   2026-11-25T06:25:30.16+0530 [CELL/0] OUT Starting health monitoring of container
+   2026-11-25T06:25:30.50+0530 [APP/PROC/WEB/0] OUT Invoking pre-start scripts.
+   2026-11-25T06:25:31.71+0530 [APP/PROC/WEB/0] OUT Invoking start command.
+   2026-11-25T06:25:32.53+0530 [APP/PROC/WEB/0] ERR ChainShield startup failed: Error: Connection failed (RTE:[200117] Failed to initiate any authentication method. Please ensure all relevant connection properties have been supplied correctly. X.509: No key store or PEM provided
+   2026-11-25T06:25:32.53+0530 [APP/PROC/WEB/0] ERR Kerberos error. Major: "No credentials were supplied, or the credentials were unavailable or inaccessible [458752]", minor: "No Kerberos credentials available (default cache: FILE:/tmp/krb5cc_2000) [2529639053/-1765328243]" (10.141.250.91:57148 -> 5e9723cb-c5c2-4c0e-bef4-f578566d9c3a.hana.prod-ap21.hanacloud.ondemand.com:443))
+   2026-11-25T06:25:32.53+0530 [APP/PROC/WEB/0] ERR at Socket.<anonymous> (/home/vcap/deps/0/node_modules/@sap/hana-client/lib/index.js:53:13)
+   2026-11-25T06:25:32.53+0530 [APP/PROC/WEB/0] ERR at Socket.emit (node:events:514:28)
+   2026-11-25T06:25:32.53+0530 [APP/PROC/WEB/0] ERR at addChunk (node:internal/streams/readable:569:12)
+   2026-11-25T06:25:32.53+0530 [APP/PROC/WEB/0] ERR at readableAddChunkPushByteMode (node:internal/streams/readable:520:3)
+   2026-11-25T06:25:32.53+0530 [APP/PROC/WEB/0] ERR at Readable.push (node:internal/streams/readable:400:5)
+   2026-11-25T06:25:32.53+0530 [APP/PROC/WEB/0] ERR at Pipe.onStreamRead (node:internal/stream_base_commons:194:23) {
+   2026-11-25T06:25:32.53+0530 [APP/PROC/WEB/0] ERR code: -10709,
+   2026-11-25T06:25:32.53+0530 [APP/PROC/WEB/0] ERR sqlState: 'HY000'
+   2026-11-25T06:25:32.53+0530 [APP/PROC/WEB/0] ERR }
+   2026-11-25T06:25:32.60+0530 [APP/PROC/WEB/0] OUT Exit status 1
+   2026-11-25T06:25:40.60+0530 [CELL/0] OUT Cell 4401fcd0-006d-4ceb-9b51-aa22a1b186cf stopping instance 1346bf42-e823-4f13-7628-7075
+   2026-11-25T06:25:40.60+0530 [CELL/0] OUT Cell 4401fcd0-006d-4ceb-9b51-aa22a1b186cf destroying container for instance 1346bf42-e823-4f13-7628-7075
+   2026-11-25T06:25:40.61+0530 [API/8] OUT Process has crashed with type: "web"
+   2026-11-25T06:25:40.66+0530 [API/8] OUT App instance exited with guid 93ba3049-80bb-4f87-908d-0439b8d6b304 payload: {"instance" => "1346bf42-e823-4f13-7628-7075", "index" => 0, "cell_id" => "4401fcd0-006d-4ceb-9b51-aa22a1b186cf", "reason" => "CRASHED", "exit_description" => "APP/PROC/WEB: Exited with status 1", "crash_count" => 5, "crash_timestamp" => 1795568140593751126, "version" => "2581bd99-5166-4b82-97c9-f2952dbde5a5"}
+   2026-11-25T06:25:40.88+0530 [PROXY/0] OUT Exit status 137
+   2026-11-25T06:25:42.90+0530 [CELL/0] OUT Cell 4401fcd0-006d-4ceb-9b51-aa22a1b186cf successfully destroyed container for instance 1346bf42-e823-4f13-7628-7075
+   2026-11-25T06:27:55.61+0530 [CELL/0] OUT Cell 4401fcd0-006d-4ceb-9b51-aa22a1b186cf creating container for instance 8a77596b-4fc0-4784-43d3-99f3
+   2026-11-25T06:27:56.46+0530 [CELL/0] OUT Security group rules were updated
+   2026-11-25T06:27:56.54+0530 [CELL/0] OUT Cell 4401fcd0-006d-4ceb-9b51-aa22a1b186cf successfully created container for instance 8a77596b-4fc0-4784-43d3-99f3
+   2026-11-25T06:27:59.38+0530 [CELL/0] OUT Downloading droplet...
+   2026-11-25T06:28:03.06+0530 [CELL/0] OUT Downloaded droplet
+   2026-11-25T06:28:03.06+0530 [CELL/0] OUT Starting health monitoring of container
+   2026-11-25T06:28:03.34+0530 [APP/PROC/WEB/0] OUT Invoking pre-start scripts.
+   2026-11-25T06:28:03.72+0530 [APP/PROC/WEB/0] OUT Invoking start command.
+   2026-11-25T06:28:03.97+0530 [APP/PROC/WEB/0] ERR ChainShield startup failed: Error: Connection failed (RTE:[200117] Failed to initiate any authentication method. Please ensure all relevant connection properties have been supplied correctly. X.509: No key store or PEM provided
+   2026-11-25T06:28:03.97+0530 [APP/PROC/WEB/0] ERR Kerberos error. Major: "No credentials were supplied, or the credentials were unavailable or inaccessible [458752]", minor: "No Kerberos credentials available (default cache: FILE:/tmp/krb5cc_2000) [2529639053/-1765328243]" (10.141.250.96:57578 -> 5e9723cb-c5c2-4c0e-bef4-f578566d9c3a.hana.prod-ap21.hanacloud.ondemand.com:443))
+   2026-11-25T06:28:03.97+0530 [APP/PROC/WEB/0] ERR at Socket.<anonymous> (/home/vcap/deps/0/node_modules/@sap/hana-client/lib/index.js:53:13)
+   2026-11-25T06:28:03.97+0530 [APP/PROC/WEB/0] ERR at Socket.emit (node:events:514:28)
+   2026-11-25T06:28:03.97+0530 [APP/PROC/WEB/0] ERR at addChunk (node:internal/streams/readable:569:12)
+   2026-11-25T06:28:03.97+0530 [APP/PROC/WEB/0] ERR at readableAddChunkPushByteMode (node:internal/streams/readable:520:3)
+   2026-11-25T06:28:03.97+0530 [APP/PROC/WEB/0] ERR at Readable.push (node:internal/streams/readable:400:5)
+   2026-11-25T06:28:03.97+0530 [APP/PROC/WEB/0] ERR at Pipe.onStreamRead (node:internal/stream_base_commons:194:23) {
+   2026-11-25T06:28:03.97+0530 [APP/PROC/WEB/0] ERR code: -10709,
+   2026-11-25T06:28:03.97+0530 [APP/PROC/WEB/0] ERR sqlState: 'HY000'
+   2026-11-25T06:28:03.97+0530 [APP/PROC/WEB/0] ERR }
+   2026-11-25T06:28:03.99+0530 [APP/PROC/WEB/0] OUT Exit status 1
+   2026-11-25T06:28:13.44+0530 [CELL/0] OUT Cell 4401fcd0-006d-4ceb-9b51-aa22a1b186cf stopping instance 8a77596b-4fc0-4784-43d3-99f3
+   2026-11-25T06:28:13.44+0530 [CELL/0] OUT Cell 4401fcd0-006d-4ceb-9b51-aa22a1b186cf destroying container for instance 8a77596b-4fc0-4784-43d3-99f3
+   2026-11-25T06:28:13.45+0530 [API/8] OUT Process has crashed with type: "web"
+   2026-11-25T06:28:13.48+0530 [API/8] OUT App instance exited with guid 93ba3049-80bb-4f87-908d-0439b8d6b304 payload: {"instance" => "8a77596b-4fc0-4784-43d3-99f3", "index" => 0, "cell_id" => "4401fcd0-006d-4ceb-9b51-aa22a1b186cf", "reason" => "CRASHED", "exit_description" => "APP/PROC/WEB: Exited with status 1", "crash_count" => 6, "crash_timestamp" => 1795568293438150027, "version" => "2581bd99-5166-4b82-97c9-f2952dbde5a5"}
+   2026-11-25T06:28:13.92+0530 [PROXY/0] OUT Exit status 137
+   2026-11-25T06:28:15.71+0530 [CELL/0] OUT Cell 4401fcd0-006d-4ceb-9b51-aa22a1b186cf successfully destroyed container for instance 8a77596b-4fc0-4784-43d3-99f3
